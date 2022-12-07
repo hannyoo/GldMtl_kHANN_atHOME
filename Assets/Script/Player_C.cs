@@ -6,8 +6,22 @@ public class Player_C : MonoBehaviour
 {
     public float speed;     //  Inspector 창에서 조절할수 있도록 public
     public GameObject[] weapons;
-   
+
+    public GameObject[] grenades;
+    public int hasGrenades;
+    public int maxHasGrenades;
+
     public bool[] hasWeapons; //무기를 가지고 있는 지에 대한 bool값
+
+    public int ammo;
+    public int coin;
+    public int heart;
+   
+    public int maxAmmo;
+    public int maxCoin;
+    public int maxHeart;
+   
+
 
     float hAxis;
     float vAxis;
@@ -200,6 +214,50 @@ public class Player_C : MonoBehaviour
             isJump = false;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Item")
+        { 
+            Item item = other.GetComponent<Item>();
+            switch(item.type)
+            { 
+                case Item.Type.Ammo:
+                    ammo += item.value;
+                    if(ammo>maxAmmo)
+                    { ammo = maxAmmo; }
+                    break;
+
+                case Item.Type.Coin: 
+                    coin += item.value;
+                    if (coin > maxCoin)
+                    { coin = maxCoin; }
+                    break;
+
+                case Item.Type.Heart: 
+                    heart += item.value;
+                    if (heart > maxHeart)
+                    { heart = maxHeart; }
+                    break;
+
+                case Item.Type.Grenade:
+                    grenades[hasGrenades].SetActive(true); //중요
+                    hasGrenades += item.value;
+                    if (hasGrenades > maxHasGrenades)
+                    { hasGrenades = maxHasGrenades; }
+                    break;
+
+            }
+           
+            Destroy(other.gameObject);
+        }
+    }
+
+
+
+
+
+
 
     void OnTriggerStay(Collider other)
     {
