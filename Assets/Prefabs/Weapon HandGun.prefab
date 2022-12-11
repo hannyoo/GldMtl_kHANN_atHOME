@@ -4989,8 +4989,8 @@ GameObject:
   - component: {fileID: 3793404219991891180}
   - component: {fileID: 3106840617133392882}
   - component: {fileID: 3106840617133392880}
-  - component: {fileID: 3106840617133392883}
   - component: {fileID: 3106840617133392881}
+  - component: {fileID: 154642129821038972}
   m_Layer: 0
   m_Name: Weapon HandGun
   m_TagString: Weapon
@@ -5005,7 +5005,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4606955535888402006}
-  m_LocalRotation: {x: 0.27059013, y: -0.6532805, z: -0.27058575, w: 0.653291}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5014,7 +5014,7 @@ Transform:
   - {fileID: 3106840618103433715}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0.001, y: -89.999, z: -44.998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3106840617133392882
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5044,19 +5044,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &3106840617133392883
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4606955535888402006}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.68
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3106840617133392881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5071,3 +5058,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   value: 1
+--- !u!65 &154642129821038972
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4606955535888402006}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.74, y: 1.41, z: 1}
+  m_Center: {x: 0, y: 0.52, z: 0}

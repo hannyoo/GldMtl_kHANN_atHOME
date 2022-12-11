@@ -17,11 +17,11 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Wall
+  - Floor
+  - Player
+  - PlayerBullet
+  - BulletCase
   - 
   - 
   - 

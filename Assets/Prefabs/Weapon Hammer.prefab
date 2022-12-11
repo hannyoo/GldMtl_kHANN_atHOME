@@ -4908,8 +4908,9 @@ GameObject:
   - component: {fileID: 1980845925444027285}
   - component: {fileID: 181020959639989459}
   - component: {fileID: 181020959639989457}
-  - component: {fileID: 181020959639989458}
   - component: {fileID: 181020959639989456}
+  - component: {fileID: 4579421587404900571}
+  - component: {fileID: 8832452731376112236}
   m_Layer: 0
   m_Name: Weapon Hammer
   m_TagString: Weapon
@@ -4925,7 +4926,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168315162767087919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.017, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6416328331909209292}
@@ -4963,19 +4964,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &181020959639989458
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1168315162767087919}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6
-  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!114 &181020959639989456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4990,6 +4978,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   value: 0
+--- !u!65 &4579421587404900571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168315162767087919}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.83, y: 1.53, z: 1.25}
+  m_Center: {x: 0, y: 2.24, z: 0}
+--- !u!65 &8832452731376112236
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168315162767087919}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4, y: 2.12, z: 0.4}
+  m_Center: {x: 0, y: 0.42, z: 0}
 --- !u!1 &8003809798151797632
 GameObject:
   m_ObjectHideFlags: 0
