@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player_C : MonoBehaviour
 {
+    public Camera followCamera;
+
     public float speed;     //  Inspector 창에서 조절할수 있도록 public
     public GameObject[] weapons;
 
@@ -30,6 +32,14 @@ public class Player_C : MonoBehaviour
     bool wDown;
     bool jDown;     //  점프는 뛸때와 뛰고 내려왔을때를 위해 2가지 bool 변수 설정
     bool iDown;     // 무기 획득 e키로 설정
+    
+    bool fDown;
+    bool rDown;
+
+    float fireDelay;
+    bool isFireReady = true;
+    bool isReload;
+
 
 
     bool isJump;
@@ -48,7 +58,7 @@ public class Player_C : MonoBehaviour
     Animator anim;
 
     GameObject nearObject;      // 아이템 Collider에 접근한 오브젝트
-    GameObject equipWeapon;     //  무기 장착
+    Weapon equipWeapon;     //  무기 장착
 
     int equipWeaponIndex = -1;
 
@@ -68,6 +78,10 @@ public class Player_C : MonoBehaviour
         Move();
         Turn();
         Jump();
+
+        Attack();
+        Reload();
+
         Dodge();
         
         Swap();
@@ -91,11 +105,19 @@ public class Player_C : MonoBehaviour
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
 
+        fDown = Input.GetButton("Fire1");
+        rDown = Input.GetButtonDown("Reload");
     }
 
     void Move()
     {
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;  // 새로운 좌표(new Vector3)중 Y축 제외(0)하고 이동. normalized=대각선으로 가도 속도 동일
+
+        if (isDodge)                     //  만약 isDodge(회피)한다면
+        { moveVec = dodgeVec; }         //  움직이는 곳이랑 회피하는 곳이랑 같음 - Dodge 하는 중 다른 방향으로 가지 않기위함
+
+        if(isSwap || !isFireReady || isReload)
+        { moveVec = Vector3.zero; }
 
         transform.position += moveVec * speed * Time.deltaTime;     // ??? 어렵네 이건
 
@@ -103,18 +125,25 @@ public class Player_C : MonoBehaviour
         anim.SetBool("isRun", moveVec != Vector3.zero);     //  애니메이션 isRun, 움직임이 0이 아닐때 즉 움직이고 있을때 isRun애니메이션 실행
         anim.SetBool("isWalk", wDown);                      //  애니메이션 isWalk, wDown키 누를때 isWalk애니메이션 실행
 
-
-        if (isDodge)                     //  만약 isDodge(회피)한다면
-        { moveVec = dodgeVec; }         //  움직이는 곳이랑 회피하는 곳이랑 같음 - Dodge 하는 중 다른 방향으로 가지 않기위함
-
-        if(isSwap)
-        { moveVec = Vector3.zero; }
-
     }
 
     void Turn()
     {
         transform.LookAt(transform.position + moveVec);     // 움직이려는 곳 (입력된 방향)을 LookAt(바라본다)
+
+        if (fDown)
+        {
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayhit;
+            if (Physics.Raycast(ray, out rayhit, 100))
+            {
+                Vector3 nextVec = rayhit.point - transform.position;
+                nextVec.y = 0;
+                transform.LookAt(transform.position + nextVec);
+            }
+        }
+
+
     }
 
     void Jump()
@@ -129,6 +158,53 @@ public class Player_C : MonoBehaviour
 
         }                    
     }
+    void Attack()
+    {
+        if (equipWeapon == null)
+        { return; }
+
+        fireDelay += Time.deltaTime;
+        isFireReady = equipWeapon.rate < fireDelay;
+
+        if (fDown && isFireReady && !isDodge && !isSwap)
+        {
+            equipWeapon.Use();
+            anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
+            fireDelay = 0;
+
+        }
+
+    }
+
+    void Reload()
+    {
+        if (equipWeapon == null)
+        { return; }
+
+        if(equipWeapon.type == Weapon.Type.Melee)
+        { return; }
+        
+        if(ammo==0)
+        { return; }
+
+        if(rDown && !isDodge && !isSwap && isFireReady)
+        {
+            anim.SetTrigger("doReload");
+            isReload = true;
+
+            Invoke("ReloadOut", 2.5f);
+        }
+
+    }
+    void ReloadOut()
+    {
+        int reAmmo = ammo < equipWeapon.maxAmmo ? ammo : equipWeapon.maxAmmo;
+        equipWeapon.curAmmo = reAmmo;
+        ammo -= reAmmo;
+        isReload = false;
+    }
+
+
     void Dodge()
     {
         if (jDown && moveVec != Vector3.zero && !isJump && !isSwap)
@@ -169,14 +245,14 @@ public class Player_C : MonoBehaviour
         if ((sDown1 || sDown2 || sDown3) && !isJump && !isDodge )
         {
             if (equipWeapon != null)
-            { equipWeapon.SetActive(false);}
+            { equipWeapon.gameObject.SetActive(false);}
 
             equipWeaponIndex = weaponIndex;
-            equipWeapon = weapons[weaponIndex];
-            equipWeapon.SetActive(true);
+            equipWeapon = weapons[weaponIndex].GetComponent<Weapon>();
+            equipWeapon.gameObject.SetActive(true);
 
             anim.SetTrigger("doSwap");
-
+           
             isSwap = true;
 
             Invoke("SwapOut", 0.5f);
